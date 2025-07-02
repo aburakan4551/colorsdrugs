@@ -60,7 +60,7 @@ export function TestInstructions({ testId, lang, onComplete, onCancel }: TestIns
           .map(step => step.replace(/^\d+\.\s*/, '')); // Remove numbering
         setPrepareSteps(steps);
       }
-    };
+    }
 
     loadTestData();
   }, [testId, lang]);
