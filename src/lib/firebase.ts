@@ -1,5 +1,5 @@
 // Firebase configuration and initialization
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
@@ -14,12 +14,22 @@ const firebaseConfig = {
   appId: "1:94361461929:web:b34ad287c782710415f5b8"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only in browser environment
+let app: any = null;
+let auth: any = null;
+let db: any = null;
 
-// Initialize Firebase services
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+if (typeof window !== 'undefined') {
+  // Initialize Firebase only if not already initialized
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+  // Initialize Firebase services
+  auth = getAuth(app);
+  db = getFirestore(app);
+}
+
+// Export Firebase services
+export { auth, db };
 
 // Export the app instance
 export default app;

@@ -7,15 +7,20 @@ import { getTranslations } from '@/lib/translations';
 
 // Generate static params for all test combinations
 export async function generateStaticParams() {
-  const tests = await DataService.getChemicalTests();
+  // Use predefined test IDs for static generation to avoid Firebase calls during build
+  const testIds = [
+    'marquis', 'mecke', 'mandelin', 'liebermann', 'simon', 'froehde',
+    'ehrlich', 'hofmann', 'chen', 'scott', 'zimmermann', 'robadope',
+    'folin', 'gallic', 'vanillin', 'duquenois', 'cobalt', 'dille-koppanyi'
+  ];
   const languages: Language[] = ['ar', 'en'];
 
   const params = [];
   for (const lang of languages) {
-    for (const test of tests) {
+    for (const testId of testIds) {
       params.push({
         lang,
-        testId: test.id,
+        testId,
       });
     }
   }

@@ -46,6 +46,11 @@ const STORAGE_KEYS = {
 export class DataService {
   // Get all chemical tests
   static async getChemicalTests(): Promise<ChemicalTest[]> {
+    // During build time, return empty array to avoid Firebase calls
+    if (typeof window === 'undefined') {
+      return [];
+    }
+
     try {
       return await chemicalTestsService.getAll();
     } catch (error) {
@@ -126,7 +131,7 @@ export class DataService {
 
   // Generate unique ID
   static generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
   }
 
   // Local Storage Operations
