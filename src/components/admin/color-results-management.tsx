@@ -400,14 +400,14 @@ export function ColorResultsManagement({ lang }: ColorResultsManagementProps) {
 // Color Result Modal Component
 interface ColorResultModalProps {
   lang: Language;
-  result: ColorResult | null;
-  tests: ChemicalTest[];
-  onSave: (result: ColorResult) => void;
+  result: FirebaseColorResult | null;
+  tests: FirebaseChemicalTest[];
+  onSave: (result: FirebaseColorResult) => void;
   onClose: () => void;
 }
 
 function ColorResultModal({ lang, result, tests, onSave, onClose }: ColorResultModalProps) {
-  const [formData, setFormData] = useState<ColorResult>({
+  const [formData, setFormData] = useState<FirebaseColorResult>({
     id: result?.id || '',
     test_id: result?.test_id || '',
     color_result: result?.color_result || '',
