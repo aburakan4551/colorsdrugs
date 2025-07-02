@@ -38,6 +38,7 @@ interface TestResultsProps {
 
 export function TestResults({ testId, selectedColor, lang, onBack, onNewTest }: TestResultsProps) {
   const [result, setResult] = useState<TestResult | null>(null);
+  const [testData, setTestData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
   const router = useRouter();
@@ -58,6 +59,9 @@ export function TestResults({ testId, selectedColor, lang, onBack, onNewTest }: 
         if (!test) {
           throw new Error('Test data not found');
         }
+
+        // Save test data to state
+        setTestData(test);
 
         // If no specific color result found, create a generic one
         if (!colorResult) {
@@ -240,7 +244,7 @@ export function TestResults({ testId, selectedColor, lang, onBack, onNewTest }: 
                   {lang === 'ar' ? 'نوع الاختبار' : 'Test Type'}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  {DataService.getChemicalTestById(testId)?.[lang === 'ar' ? 'method_name_ar' : 'method_name'] || testId.charAt(0).toUpperCase() + testId.slice(1)} Test
+                  {testData?.[lang === 'ar' ? 'method_name_ar' : 'method_name'] || testId.charAt(0).toUpperCase() + testId.slice(1)} Test
                 </p>
               </div>
             </div>
@@ -353,8 +357,7 @@ export function TestResults({ testId, selectedColor, lang, onBack, onNewTest }: 
 
         {/* Reference Section */}
         {(() => {
-          const test = DataService.getChemicalTestById(testId);
-          const reference = test?.reference;
+          const reference = testData?.reference;
           if (reference) {
             return (
               <div className="p-6 print:p-4 bg-blue-50 dark:bg-blue-900/20 border-t border-blue-200 dark:border-blue-800">
