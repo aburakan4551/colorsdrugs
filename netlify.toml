@@ -6,6 +6,7 @@
   NODE_VERSION = "18"
   NPM_VERSION = "9"
   CI = "true"
+  SKIP_PREFLIGHT_CHECK = "true"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -18,6 +19,13 @@
   NEXT_PUBLIC_MAX_LOGIN_ATTEMPTS = "5"
   NEXT_PUBLIC_LOCKOUT_DURATION = "900000"
   NODE_ENV = "production"
+  NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyBCTEmastiOgvmTDu1EHxA0bkDAws00bIU"
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "colorstests-573ef.firebaseapp.com"
+  NEXT_PUBLIC_FIREBASE_DATABASE_URL = "https://colorstests-573ef-default-rtdb.firebaseio.com"
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID = "colorstests-573ef"
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "colorstests-573ef.firebasestorage.app"
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "94361461929"
+  NEXT_PUBLIC_FIREBASE_APP_ID = "1:94361461929:web:b34ad287c782710415f5b8"
 
 [[headers]]
   for = "/*"
