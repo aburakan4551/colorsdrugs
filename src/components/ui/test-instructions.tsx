@@ -53,6 +53,7 @@ export function TestInstructions({ testId, lang, onComplete, onCancel }: TestIns
       const test = await DataService.getChemicalTestById(testId);
       setTestData(test);
 
+      if (test) {
         // Parse prepare field into steps
         const steps = (lang === 'ar' ? test.prepare_ar || test.prepare : test.prepare)
           .split('\n')
@@ -60,7 +61,7 @@ export function TestInstructions({ testId, lang, onComplete, onCancel }: TestIns
           .map(step => step.replace(/^\d+\.\s*/, '')); // Remove numbering
         setPrepareSteps(steps);
       }
-    }
+    };
 
     loadTestData();
   }, [testId, lang]);
