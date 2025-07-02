@@ -50,25 +50,29 @@ export function TestsPage({ lang }: TestsPageProps) {
   }, []);
 
   useEffect(() => {
-    // Filter tests based on search and filters
-    let filtered = tests;
+    const filterTests = async () => {
+      // Filter tests based on search and filters
+      let filtered = tests;
 
-    // Search filter
-    if (searchQuery) {
-      filtered = DataService.searchTests(searchQuery, lang);
-    }
+      // Search filter
+      if (searchQuery) {
+        filtered = await DataService.searchTests(searchQuery, lang);
+      }
 
-    // Category filter
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(test => test.category === selectedCategory);
-    }
+      // Category filter
+      if (selectedCategory !== 'all') {
+        filtered = filtered.filter(test => test.category === selectedCategory);
+      }
 
-    // Safety level filter
-    if (selectedSafetyLevel !== 'all') {
-      filtered = filtered.filter(test => test.safety_level === selectedSafetyLevel);
-    }
+      // Safety level filter
+      if (selectedSafetyLevel !== 'all') {
+        filtered = filtered.filter(test => test.safety_level === selectedSafetyLevel);
+      }
 
-    setFilteredTests(filtered);
+      setFilteredTests(filtered);
+    };
+
+    filterTests();
   }, [tests, searchQuery, selectedCategory, selectedSafetyLevel, lang]);
 
   const categories = [

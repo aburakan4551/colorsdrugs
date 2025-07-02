@@ -268,11 +268,29 @@ export class DataService {
     this.saveToLocalStorage(STORAGE_KEYS.ADMIN_DATA, data);
   }
 
+  // Helper method for getting results by confidence
+  static async getResultsByConfidence(results: TestResult[]): Promise<Record<string, number>> {
+    const confidenceMap: Record<string, number> = {};
+
+    for (const result of results) {
+      try {
+        const colorResult = await this.getColorResultById(result.color_result_id);
+        if (colorResult) {
+          confidenceMap[colorResult.confidence_level] = (confidenceMap[colorResult.confidence_level] || 0) + 1;
+        }
+      } catch (error) {
+        console.error('Error fetching color result:', error);
+      }
+    }
+
+    return confidenceMap;
+  }
+
   // Statistics and Analytics
-  static getStatistics() {
+  static async getStatistics() {
     const results = this.getTestResults();
     const sessions = this.getTestSessions();
-    const tests = this.getChemicalTests();
+    const tests = await this.getChemicalTests();
 
     const stats = {
       total_tests: tests.length,
@@ -283,13 +301,7 @@ export class DataService {
         acc[test.category] = (acc[test.category] || 0) + 1;
         return acc;
       }, {} as Record<string, number>),
-      results_by_confidence: results.reduce((acc, result) => {
-        const colorResult = this.getColorResultById(result.color_result_id);
-        if (colorResult) {
-          acc[colorResult.confidence_level] = (acc[colorResult.confidence_level] || 0) + 1;
-        }
-        return acc;
-      }, {} as Record<string, number>),
+      results_by_confidence: await this.getResultsByConfidence(results),
       recent_activity: results
         .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
         .slice(0, 10),
@@ -299,8 +311,8 @@ export class DataService {
   }
 
   // Search and Filter
-  static searchTests(query: string, language: Language = 'ar'): ChemicalTest[] {
-    const tests = this.getChemicalTests();
+  static async searchTests(query: string, language: Language = 'ar'): Promise<ChemicalTest[]> {
+    const tests = await this.getChemicalTests();
     const searchTerm = query.toLowerCase();
 
     return tests.filter(test => {
